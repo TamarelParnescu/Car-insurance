@@ -1,13 +1,19 @@
 package com.example.carins.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "insurancepolicy")
+@Check(constraints = "end_date > start_date")
 public class InsurancePolicy {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "pk_sequence", initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -15,6 +21,9 @@ public class InsurancePolicy {
 
     private String provider;
     private LocalDate startDate;
+    @Column(nullable = false)
+    @NotNull(message = "End date of the insurance policy must not be NULL")
+    @Future(message = "End date of the insurance policy must be a valid date in the future")
     private LocalDate endDate; // nullable == open-ended
 
     public InsurancePolicy() {}

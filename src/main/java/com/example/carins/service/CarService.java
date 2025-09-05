@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -21,6 +22,11 @@ public class CarService {
 
     public List<Car> listCars() {
         return carRepository.findAll();
+    }
+
+    public Optional<Car> getCarById(Long id)
+    {
+        return carRepository.findCarById(id);
     }
 
     public boolean isInsuranceValid(Long carId, LocalDate date) {
