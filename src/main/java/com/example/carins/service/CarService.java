@@ -1,5 +1,7 @@
 package com.example.carins.service;
 
+import com.example.carins.exception.DateOutOfRangeException;
+import com.example.carins.exception.ResourceNotFoundException;
 import com.example.carins.model.Car;
 import com.example.carins.repo.CarRepository;
 import com.example.carins.repo.InsurancePolicyRepository;
@@ -7,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CarService {
@@ -24,14 +25,16 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Optional<Car> getCarById(Long id)
-    {
-        return carRepository.findCarById(id);
-    }
-
     public boolean isInsuranceValid(Long carId, LocalDate date) {
-        if (carId == null || date == null) return false;
-        // TODO: optionally throw NotFound if car does not exist
+        if (carRepository.findCarById(carId).isEmpty()) throw new ResourceNotFoundException("Car with id: " + carId + " not found");
+        // DONE: optionally throw NotFound if car does not exist
+
+        final LocalDate MIN_DATE = LocalDate.of(2000,1,1);
+        final LocalDate MAX_DATE = LocalDate.now().plusYears(1); //Max Period for an Insurance Policy - one year
+
+        if(date.isBefore(MIN_DATE) || date.isAfter(MAX_DATE))
+            throw new DateOutOfRangeException("Selected Date is not inside the timeframe");
+
         return policyRepository.existsActiveOnDate(carId, date);
     }
 }

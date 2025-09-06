@@ -2,6 +2,7 @@ package com.example.carins.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -10,11 +11,21 @@ public class Car {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank @Size(min = 5, max = 32)
+    @NotBlank(message = "A vin is required")
+    @Size(min = 5, max = 32)
+    @Column(nullable = false, unique = true)
     private String vin;
 
+    @NotBlank(message = "The car's manufacture is required")
+    @Column(nullable = false)
     private String make;
+
+    @NotBlank(message = "The car's model is required")
+    @Column(nullable = false)
     private String model;
+
+    @NotNull(message = "The car's year of manufacture is required")
+    @Column(nullable = false)
     private int yearOfManufacture;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

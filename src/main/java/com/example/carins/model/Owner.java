@@ -10,8 +10,10 @@ public class Owner {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
+    @Column(nullable = false)
     private String name;
     @Email
+    @Column(nullable = false)
     private String email;
 
     public Owner() {}

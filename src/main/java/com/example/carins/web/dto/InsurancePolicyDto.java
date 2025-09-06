@@ -7,16 +7,16 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record InsurancePolicyDto(
-        @NotNull
+        @NotNull(message = "A car id is required")
         Long carId,
 
-        @NotBlank(message = "An insurance provider must be declared")
+        @NotBlank(message = "An insurance provider is required")
         String provider,
 
-        @NotNull(message = "Start date must not be NULL")
+        @NotNull(message = "Start date is required")
         LocalDate startDate,
 
-        @NotNull(message = "End date must not be NULL")
-        @Future(message = "End date must be set to a date in the future")
+        @NotNull(message = "End date is required")
+        @Future(message = "End date should not be a past date")
         LocalDate endDate
 ) {}
