@@ -32,7 +32,7 @@ public class InsurancePolicyController {
     @GetMapping("/insurance-policy/{id}")
     public ResponseEntity<?> getPolicy(@PathVariable Long id)
     {
-        return ResponseEntity.ok(this.toDto(service.getInsuranceClaimById(id)));
+        return ResponseEntity.ok(this.toDto(service.getInsurancePolicyById(id)));
     }
 
     private InsurancePolicyDto toDto(InsurancePolicy policy) {

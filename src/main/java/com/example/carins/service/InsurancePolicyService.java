@@ -4,11 +4,11 @@ import com.example.carins.exception.DateOutOfRangeException;
 import com.example.carins.exception.InvalidInsuranceException;
 import com.example.carins.exception.ResourceNotFoundException;
 import com.example.carins.model.Car;
-import com.example.carins.model.InsuranceClaim;
 import com.example.carins.model.InsurancePolicy;
 import com.example.carins.repo.CarRepository;
 import com.example.carins.repo.InsurancePolicyRepository;
 import com.example.carins.web.dto.InsurancePolicyDto;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +28,13 @@ public class InsurancePolicyService {
         this.carRepository = carRepository;
     }
 
-    public InsurancePolicy getInsuranceClaimById(Long id)
+    public InsurancePolicy getInsurancePolicyById(Long id)
     {
         Optional<InsurancePolicy> claimOptional = repository.findById(id);
         if(claimOptional.isEmpty()) throw new ResourceNotFoundException("No insurance policy with id: " + id + " found");
         return claimOptional.get();
     }
+    @Transactional
     public InsurancePolicy createInsurancePolicy(InsurancePolicyDto dto)
     {
         this.validateDto(dto);

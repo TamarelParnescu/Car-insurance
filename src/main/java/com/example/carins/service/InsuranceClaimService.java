@@ -7,6 +7,7 @@ import com.example.carins.model.InsurancePolicy;
 import com.example.carins.repo.InsuranceClaimRepository;
 import com.example.carins.repo.InsurancePolicyRepository;
 import com.example.carins.web.dto.InsuranceClaimDto;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,7 @@ public class InsuranceClaimService {
         return claimOptional.get();
     }
 
+    @Transactional
     public InsuranceClaim createInsuranceClaim(Long carId, InsuranceClaimDto dto){
         InsurancePolicy insurancePolicy = getActiveInsuranceAtClaimDate(carId, dto);
         return repository.save(convertDto(dto, insurancePolicy));
